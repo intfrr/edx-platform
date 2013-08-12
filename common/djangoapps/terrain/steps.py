@@ -21,7 +21,7 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 
-@step(r'I wait (?:for )?"(\d+)" seconds?$')
+@step(r'I wait (?:for )?"(\d+\.?\d*)" seconds?$')
 def wait(step, seconds):
     world.wait(seconds)
 
@@ -174,6 +174,11 @@ def dialogs_are_closed(step):
 @step(u'visit the url "([^"]*)"')
 def visit_url(step, url):
     world.browser.visit(django_url(url))
+
+
+@step(u'wait for AJAX to (?:finish|complete)')
+def wait_ajax(_step):
+    wait_for_ajax_complete()
 
 
 @step('I will confirm all alerts')

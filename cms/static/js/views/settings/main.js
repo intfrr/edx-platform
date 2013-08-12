@@ -1,5 +1,5 @@
-define(["js/views/validation", "codemirror", "underscore", "jquery", "jquery.ui", "jquery.timepicker", "date"],
-    function(ValidatingView, CodeMirror, _, $, ui) {
+define(["js/views/validation", "codemirror", "underscore", "jquery", "jquery.ui", "js/models/uploads", "js/views/uploads", "jquery.timepicker", "date"],
+    function(ValidatingView, CodeMirror, _, $, ui, FileUploadModel, FileUploadDialog) {
 
 var DetailsView = ValidatingView.extend({
     // Model class is CMS.Models.Settings.CourseDetails
@@ -14,8 +14,8 @@ var DetailsView = ValidatingView.extend({
         'mouseover #timezone' : "updateTime",
         // would love to move to a general superclass, but event hashes don't inherit in backbone :-(
         'focus :input' : "inputFocus",
-        'blur :input' : "inputUnfocus"
-
+        'blur :input' : "inputUnfocus",
+        'click .action-upload-image': "uploadImage"
     },
 
     initialize : function() {
@@ -25,6 +25,14 @@ var DetailsView = ValidatingView.extend({
         this.$el.find("#course-organization").val(this.model.get('location').get('org'));
         this.$el.find("#course-number").val(this.model.get('location').get('course'));
         this.$el.find('.set-date').datepicker({ 'dateFormat': 'm/d/yy' });
+
+        // Avoid showing broken image on mistyped/nonexistent image
+        this.$el.find('img.course-image').error(function() {
+            $(this).hide();
+        });
+        this.$el.find('img.course-image').load(function() {
+            $(this).show();
+        });
 
         var dateIntrospect = new Date();
         this.$el.find('#timezone').html("(" + dateIntrospect.getTimezone() + ")");
@@ -52,6 +60,10 @@ var DetailsView = ValidatingView.extend({
 
         this.$el.find('#' + this.fieldToSelectorMap['effort']).val(this.model.get('effort'));
 
+        var imageURL = this.model.get('course_image_asset_path');
+        this.$el.find('#course-image-url').val(imageURL)
+        this.$el.find('#course-image').attr('src', imageURL);
+
         return this;
     },
     fieldToSelectorMap : {
@@ -61,7 +73,8 @@ var DetailsView = ValidatingView.extend({
         'enrollment_end' : 'enrollment-end',
         'overview' : 'course-overview',
         'intro_video' : 'course-introduction-video',
-        'effort' : "course-effort"
+        'effort' : "course-effort",
+        'course_image_asset_path': 'course-image-url'
     },
 
     updateTime : function(e) {
@@ -122,6 +135,17 @@ var DetailsView = ValidatingView.extend({
 
     updateModel: function(event) {
         switch (event.currentTarget.id) {
+        case 'course-image-url':
+            this.setField(event);
+            var url = $(event.currentTarget).val();
+            var image_name = _.last(url.split('/'));
+            this.model.set('course_image_name', image_name);
+            // Wait to set the image src until the user stops typing
+            clearTimeout(this.imageTimer);
+            this.imageTimer = setTimeout(function() {
+                $('#course-image').attr('src', $(event.currentTarget).val());
+            }, 1000);
+            break;
         case 'course-effort':
             this.setField(event);
             break;
@@ -217,6 +241,29 @@ var DetailsView = ValidatingView.extend({
                                                           this.save_message,
                                                           _.bind(this.saveView, this),
                                                           _.bind(this.revertView, this));
+    },
+
+    uploadImage: function(event) {
+        event.preventDefault();
+        var upload = new FileUploadModel({
+            title: gettext("Upload your course image."),
+            message: gettext("Files must be in JPEG or PNG format."),
+            mimeTypes: ['image/jpeg', 'image/png']
+        });
+        var self = this;
+        var modal = new FileUploadDialog({
+            model: upload,
+            onSuccess: function(response) {
+                var options = {
+                    'course_image_name': response.displayname,
+                    'course_image_asset_path': response.url
+                };
+                self.model.set(options);
+                self.render();
+                $('#course-image').attr('src', self.model.get('course_image_asset_path'));
+            }
+        });
+        $('.wrapper-view').after(modal.show().el);
     }
 });
 

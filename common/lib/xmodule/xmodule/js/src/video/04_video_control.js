@@ -51,7 +51,7 @@ function () {
 
         state.videoControl.fullScreenState = false;
 
-        if (!onTouchBasedDevice()) {
+        if (!$("body").hasClass('touch-based-device')) {
             state.videoControl.pause();
         } else {
             state.videoControl.play();

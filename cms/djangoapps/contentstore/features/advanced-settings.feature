@@ -27,6 +27,7 @@ Feature: Advanced (manual) course policy
   Scenario: Test editing key value
     Given I am on the Advanced Course Settings page in Studio
     When I edit the value of a policy key and save
+    And I wait for AJAX to complete
     Then the policy key value is changed
     And I reload the page
     Then the policy key value is changed
@@ -36,6 +37,7 @@ Feature: Advanced (manual) course policy
   Scenario: Test how multi-line input appears
     Given I am on the Advanced Course Settings page in Studio
     When I create a JSON object as a value for "discussion_topics"
+    And I wait for AJAX to complete
     Then it is displayed as formatted
     And I reload the page
     Then it is displayed as formatted
@@ -45,6 +47,7 @@ Feature: Advanced (manual) course policy
   Scenario: Test error if value supplied is of the wrong type
     Given I am on the Advanced Course Settings page in Studio
     When I create a JSON object as a value for "display_name"
+    And I wait for AJAX to complete
     Then I get an error on save
     And I reload the page
     Then the policy key value is unchanged

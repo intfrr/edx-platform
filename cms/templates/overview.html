@@ -13,12 +13,13 @@
 
 <%block name="jsextra">
 <link rel="stylesheet" type="text/css" href="${static.url('js/vendor/timepicker/jquery.timepicker.css')}" />
+<link rel="stylesheet" type="text/css" href="${static.url('css/vendor/html5-input-polyfills/number-polyfill.css')}" />
   <script type="text/template" id="section-name-edit-tpl">
     <%static:include path="js/section-name-edit.underscore" />
   </script>
 
   <script type="text/javascript">
-require(["jquery", "js/models/location", "js/models/section", "js/views/section_show", "js/views/overview_assignment_grader", "js/collections/course_grader", "js/views/overview"],
+require(["jquery", "js/models/location", "js/models/section", "js/views/section_show", "js/views/overview_assignment_grader", "js/collections/course_grader", "js/views/overview", "jquery.inputnumber"],
     function($, Location, SectionModel, SectionShowView, OverviewAssignmentGrader, CourseGraderCollection){
   $(document).ready(function(){
     // TODO figure out whether these should be in window or someplace else or whether they're only needed as local vars

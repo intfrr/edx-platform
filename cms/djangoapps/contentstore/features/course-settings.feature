@@ -8,7 +8,9 @@ Feature: Course Settings
     When I select Schedule and Details
     And I set course dates
     And I press the "Save" notification button
-    Then I see the set dates on refresh
+    And I wait for AJAX to complete
+    And I reload the page
+    Then I see the set dates
 
     # IE has trouble with saving information
     @skip_internetexplorer
@@ -16,16 +18,20 @@ Feature: Course Settings
     Given I have set course dates
     And I clear all the dates except start
     And I press the "Save" notification button
-    Then I see cleared dates on refresh
+    And I wait for AJAX to complete
+    And I reload the page
+    Then I see cleared dates
 
     # IE has trouble with saving information
     @skip_internetexplorer
   Scenario: User cannot clear the course start date
     Given I have set course dates
     And I press the "Save" notification button
+    And I wait for AJAX to complete
     And I clear the course start date
     Then I receive a warning about course start date
-    And The previously set start date is shown on refresh
+    And I reload the page
+    And The previously set start date is shown
 
     # IE has trouble with saving information
     # Safari gets CSRF token errors
@@ -35,22 +41,27 @@ Feature: Course Settings
     Given I have tried to clear the course start
     And I have entered a new course start date
     And I press the "Save" notification button
+    And I wait for AJAX to complete
     Then The warning about course start date goes away
-    And My new course start date is shown on refresh
+    And I reload the page
+    Then my new course start date is shown
 
   # Safari does not save + refresh properly through sauce labs
   @skip_safari
   Scenario: Settings are only persisted when saved
     Given I have set course dates
     And I press the "Save" notification button
+    And I wait for AJAX to complete
     When I change fields
-    Then I do not see the new changes persisted on refresh
+    And I reload the page
+    Then I do not see the changes
 
   # Safari does not save + refresh properly through sauce labs
   @skip_safari
   Scenario: Settings are reset on cancel
     Given I have set course dates
     And I press the "Save" notification button
+    And I wait for AJAX to complete
     When I change fields
     And I press the "Cancel" notification button
     Then I do not see the changes
@@ -62,6 +73,7 @@ Feature: Course Settings
     When I select Schedule and Details
     And I change the "<field>" field to "<value>"
     And I press the "Save" notification button
+    And I wait for AJAX to complete
     Then I see a confirmation that my changes have been saved
     # Lettuce hooks don't get called between each example, so we need
     # to run the before.each_scenario hook manually to avoid database

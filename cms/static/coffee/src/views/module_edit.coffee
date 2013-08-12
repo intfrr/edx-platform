@@ -1,5 +1,6 @@
 define ["backbone", "jquery", "underscore", "gettext", "xmodule",
-        "js/views/feedback_notification", "js/views/metadata", "js/collections/metadata"],
+        "js/views/feedback_notification", "js/views/metadata", "js/collections/metadata"
+        "jquery.inputnumber"],
 (Backbone, $, _, gettext, XModule, NotificationView, MetadataView, MetadataCollection) ->
   class ModuleEdit extends Backbone.View
     tagName: 'li'
@@ -74,6 +75,7 @@ define ["backbone", "jquery", "underscore", "gettext", "xmodule",
         @$el.load("/preview_component/#{@model.id}", =>
           @loadDisplay()
           @delegateEvents()
+          $('input[type="number"]').inputNumber()
         )
 
     clickSaveButton: (event) =>
@@ -90,13 +92,10 @@ define ["backbone", "jquery", "underscore", "gettext", "xmodule",
         title: gettext('Saving') + '&hellip;'
       saving.show()
       @model.save(data).done( =>
-      #   # showToastMessage("Your changes have been saved.", null, 3)
         @module = null
         @render()
         @$el.removeClass('editing')
         saving.hide()
-      ).fail( ->
-        showToastMessage(gettext("There was an error saving your changes. Please try again."), null, 3)
       )
 
     clickCancelButton: (event) ->

@@ -117,4 +117,5 @@ def change_display_name_value(step, new_value):
 
 def change_value(step, key, new_value):
     type_in_codemirror(get_index_of(key), new_value)
+    world.wait(0.5)
     press_the_notification_button(step, "Save")

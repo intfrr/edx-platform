@@ -97,6 +97,7 @@ Feature: Course Grading
         And I am viewing the grading settings
         When I change the highest grade range to "Good"
         And I press the "Save" notification button
+        And I wait for AJAX to complete
         And I reload the page
         Then I see the highest grade range is "Good"
 
@@ -112,6 +113,7 @@ Feature: Course Grading
         And I am viewing the grading settings
         When I change the grace period to "48:00"
         And I press the "Save" notification button
+        And I wait for AJAX to complete
         And I reload the page
         Then I see the grace period is "48:00"
 
@@ -121,5 +123,6 @@ Feature: Course Grading
         And I am viewing the grading settings
         When I change the grace period to "01:99"
         And I press the "Save" notification button
+        And I wait for AJAX to complete
         And I reload the page
         Then I see the grace period is "02:39"

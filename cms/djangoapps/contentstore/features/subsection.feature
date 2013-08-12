@@ -31,6 +31,7 @@ Feature: Create Subsection
     Given I have opened a new subsection in Studio
     And I set the subsection release date to 12/25/2011 03:00
     And I set the subsection due date to 01/02/2012 04:00
+    And I wait for AJAX to complete
     Then I see the subsection release date is 12/25/2011 03:00
     And I see the subsection due date is 01/02/2012 04:00
     And I reload the page

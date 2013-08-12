@@ -177,7 +177,7 @@ function () {
                 _this.videoCaption.start = captions.start;
                 _this.videoCaption.loaded = true;
 
-                if (onTouchBasedDevice()) {
+                if ($("body").hasClass('touch-based-device')) {
                     _this.videoCaption.subtitlesEl.find('li').html(
                         gettext(
                             'Caption will be displayed when ' +

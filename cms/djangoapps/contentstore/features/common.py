@@ -159,6 +159,7 @@ def log_into_studio(
 
     assert uname in world.css_text('h2.title', max_attempts=15)
 
+
 def create_a_course():
     course = world.CourseFactory.create(org='MITx', course='999', display_name='Robot Super Course')
     world.scenario_dict['COURSE'] = course

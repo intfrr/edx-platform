@@ -44,7 +44,7 @@ function () {
     //     make the created DOM elements available via the 'state' object. Much easier to work this
     //     way - you don't have to do repeated jQuery element selects.
     function _renderElements(state) {
-        if (!onTouchBasedDevice()) {
+        if (!$("body").hasClass('touch-based-device')) {
             state.videoProgressSlider.el = state.videoControl.sliderEl;
 
             buildSlider(state);
