@@ -46,71 +46,63 @@
 </%block>
 
 <%block name="jsextra">
-<script src="${static.url('js/vendor/jQuery-File-Upload/js/jquery.iframe-transport.js')}"> </script>
-<script src="${static.url('js/vendor/jQuery-File-Upload/js/jquery.fileupload.js')}"> </script>
-
 <script>
-(function() {
-
-var bar = $('.progress-bar');
-var fill = $('.progress-fill');
-var percent = $('.percent');
-var status = $('#status');
-var statusBlock = $('.status-block');
-var submitBtn = $('.submit-button');
-
-
-$('#fileupload').fileupload({
-
-    dataType: 'json',
-    type: 'POST',
-
-    maxChunkSize: 20 * 1000000, // 20 MB
-
-    autoUpload: false,
-
-    add: function(e, data) {
-        submitBtn.unbind('click');
-        var file = data.files[0];
-        if (file.type == "application/x-gzip") {
-            submitBtn.click(function(e){
-                e.preventDefault();
-                submitBtn.hide();
-                data.submit().complete(function(result, textStatus, xhr) {
-                    if (result.status != 200) {
-                        alert('${_("Your import has failed.")}\n\n' + JSON.parse(result.responseText)["ErrMsg"]);
-                        submitBtn.show();
-                        bar.hide();
-                    } else {
-                        if (result.responseText["ImportStatus"] == 1) {
-                            bar.hide();
-                            statusBlock.show();
-                        }
-                    }
-                });
-            });
-        } else {
-            data.files = [];
-        }
-    },
-
-    progressall: function(e, data){
-        var percentVal = parseInt(data.loaded / data.total * 100, 10) + "%";
-        bar.show();
-        fill.width(percentVal);
-        percent.html(percentVal);
-    },
-    done: function(e, data){
-        bar.hide();
-        alert('${_("Your import was successful.")}');
-        window.location = '${successful_import_redirect_url}';
-    },
-    sequentialUploads: true
+require(["jquery", "jquery.fileupload"], function($) {
+  var bar = $('.progress-bar'),
+      fill = $('.progress-fill'),
+      percent = $('.percent'),
+      status = $('#status'),
+      statusBlock = $('.status-block'),
+      submitBtn = $('.submit-button');
 
 
+  $('#fileupload').fileupload({
 
+      dataType: 'json',
+      type: 'POST',
+
+      maxChunkSize: 20 * 1000000, // 20 MB
+
+      autoUpload: false,
+
+      add: function(e, data) {
+          submitBtn.unbind('click');
+          var file = data.files[0];
+          if (file.type == "application/x-gzip") {
+              submitBtn.click(function(e){
+                  e.preventDefault();
+                  submitBtn.hide();
+                  data.submit().complete(function(result, textStatus, xhr) {
+                      if (result.status != 200) {
+                          alert('${_("Your import has failed.")}\n\n' + JSON.parse(result.responseText)["ErrMsg"]);
+                          submitBtn.show();
+                          bar.hide();
+                      } else {
+                          if (result.responseText["ImportStatus"] == 1) {
+                              bar.hide();
+                              statusBlock.show();
+                          }
+                      }
+                  });
+              });
+          } else {
+              data.files = [];
+          }
+      },
+
+      progressall: function(e, data){
+          var percentVal = parseInt(data.loaded / data.total * 100, 10) + "%";
+          bar.show();
+          fill.width(percentVal);
+          percent.html(percentVal);
+      },
+      done: function(e, data){
+          bar.hide();
+          alert('${_("Your import was successful.")}');
+          window.location = '${successful_import_redirect_url}';
+      },
+      sequentialUploads: true
+  });
 });
-
-})();
 </script>
 </%block>
