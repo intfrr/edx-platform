@@ -1,0 +1,61 @@
+var require = {
+    baseUrl: "/suite/cms/include",
+    paths: {
+        "jquery": "xmodule_js/common_static/js/vendor/jquery.min",
+        "jquery.ui" : "xmodule_js/common_static/js/vendor/jquery-ui.min",
+        "jquery.cookie": "xmodule_js/common_static/js/vendor/jquery.cookie",
+        "underscore": "xmodule_js/common_static/js/vendor/underscore-min",
+        "underscore.string": "xmodule_js/common_static/js/vendor/underscore.string.min",
+        "backbone": "xmodule_js/common_static/js/vendor/backbone-min",
+        "backbone.associations": "xmodule_js/common_static/js/vendor/backbone-associations-min",
+        "jquery.timepicker": "xmodule_js/common_static/js/vendor/timepicker/jquery.timepicker",
+        "jquery.leanmodal": "xmodule_js/common_static/js/vendor/jquery.leanModal.min",
+        "jquery.form": "xmodule_js/common_static/js/vendor/jquery.form",
+        "sinon": "xmodule_js/common_static/js/vendor/sinon-1.7.1",
+        "coffee/src/ajax_prefix": "xmodule_js/common_static/coffee/src/ajax_prefix",
+        "xmodule": "xmodule_js/src/xmodule",
+        "gettext": "xmodule_js/common_static/js/test/i18n"
+    },
+    shim: {
+        "gettext": {
+            exports: "gettext"
+        },
+        "jquery.ui": {
+            deps: ["jquery"],
+            exports: "jQuery.ui"
+        },
+        "jquery.form": {
+            deps: ["jquery"],
+            exports: "jQuery.fn.ajaxForm"
+        },
+        "jquery.leanmodal": {
+            deps: ["jquery"],
+            exports: "jQuery.fn.leanModal"
+        },
+        "jquery.cookie": {
+            deps: ["jquery"],
+            exports: "jQuery.fn.cookie"
+        },
+        "underscore": {
+            exports: "_"
+        },
+        "backbone": {
+            deps: ["underscore", "jquery"],
+            exports: "Backbone"
+        },
+        "backbone.associations": {
+            deps: ["backbone"],
+            exports: "Backbone.Associations"
+        },
+        "xmodule": {
+            exports: "XModule"
+        },
+        "sinon": {
+            exports: "sinon"
+        }
+    },
+    // load these automatically
+    deps: ["coffee/src/main", 'xmodule_js/common_static/js/test/add_ajax_prefix']
+};
+
+
