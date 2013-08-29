@@ -11,6 +11,7 @@ var require = {
         "jquery.timepicker": "xmodule_js/common_static/js/vendor/timepicker/jquery.timepicker",
         "jquery.leanmodal": "xmodule_js/common_static/js/vendor/jquery.leanModal.min",
         "jquery.form": "xmodule_js/common_static/js/vendor/jquery.form",
+        "jquery.inputnumber": "xmodule_js/common_static/js/vendor/html5-input-polyfills/number-polyfill",
         "sinon": "xmodule_js/common_static/js/vendor/sinon-1.7.1",
         "coffee/src/ajax_prefix": "xmodule_js/common_static/coffee/src/ajax_prefix",
         "xmodule": "xmodule_js/src/xmodule",
@@ -27,6 +28,10 @@ var require = {
         "jquery.form": {
             deps: ["jquery"],
             exports: "jQuery.fn.ajaxForm"
+        },
+        "jquery.inputnumber": {
+            deps: ["jquery"],
+            exports: "jQuery.fn.inputNumber"
         },
         "jquery.leanmodal": {
             deps: ["jquery"],
