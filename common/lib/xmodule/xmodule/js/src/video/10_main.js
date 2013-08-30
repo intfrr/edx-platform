@@ -72,6 +72,12 @@ function (
         // Video with Jasmine.
         return state;
     };
+
+    window.Video.clearYoutubeXhr = function () {
+        console.log('looks before: ', youtubeXhr);
+        youtubeXhr = null;
+        console.log('looks after: ', youtubeXhr);
+    };
 });
 
 }(RequireJS.requirejs, RequireJS.require, RequireJS.define));

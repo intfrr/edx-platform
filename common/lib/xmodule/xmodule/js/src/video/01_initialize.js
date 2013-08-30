@@ -251,10 +251,11 @@ function (VideoPlayer) {
 
             this.youtubeXhr
                 .always(function(json, status) {
+                    console.log('arguments = ', arguments);
+
                     var err = $.isPlainObject(json.error) ||
                                 (status !== "success" && status !== "notmodified");
-
-                    if (err){
+                    if (err) {
                         // When the youtube link doesn't work for any reason
                         // (for example, the great firewall in china) any
                         // alternate sources should automatically play.

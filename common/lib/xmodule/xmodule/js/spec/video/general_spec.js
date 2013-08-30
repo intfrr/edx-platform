@@ -58,10 +58,10 @@
 
                 describe('Check Youtube link existence', function () {
                     var statusList = {
-                        error: 'youtube',
-                        timeout: 'youtube',
-                        abort: 'youtube',
-                        parsererror: 'youtube',
+                        error: 'html5',
+                        timeout: 'html5',
+                        abort: 'html5',
+                        parsererror: 'html5',
                         success: 'youtube',
                         notmodified: 'youtube'
                     };
@@ -75,11 +75,20 @@
                     }
 
                     function checkPlayer(videoType, data, status) {
+                        // Very important!
+                        window.Video.clearYoutubeXhr();
+
                         this.state = new window.Video('#example');
+
+                        // TODO: We spy on this function very late in the game.
+                        // This is why the below expect() fails.
+                        //
+                        // Must figure something...
                         spyOn(this.state , 'getVideoMetadata')
                             .andReturn(stubDeffered(data, status));
                         this.state.initialize('#example');
 
+                        console.log('arguments = + error');
                         expect(this.state.videoType).toEqual(videoType);
                     }
 
