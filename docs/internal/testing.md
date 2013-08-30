@@ -179,6 +179,7 @@ To run a specific set of JavaScript tests and print the results to the console:
     rake test:js:run[cms]
     rake test:js:run[xmodule]
     rake test:js:run[common]
+    rake test:js:run[common_requirejs]
 
 To run JavaScript tests in your default browser:
 
@@ -186,6 +187,7 @@ To run JavaScript tests in your default browser:
     rake test:js:dev[cms]
     rake test:js:dev[xmodule]
     rake test:js:dev[common]
+    rake test:js:run[common_requirejs]
 
 These rake commands call through to a custom test runner.  For more info, see [js-test-tool](https://github.com/edx/js-test-tool).
 
