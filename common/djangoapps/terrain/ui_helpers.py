@@ -3,6 +3,7 @@
 
 from lettuce import world
 import time
+import json
 import platform
 from urllib import quote_plus
 from selenium.common.exceptions import WebDriverException
@@ -32,18 +33,60 @@ def wait_for_xmodule():
     world.wait_for(xmodule_js_loaded)
 
 
+@world.absorb
+def wait_for_requirejs(dependencies=None):
+    """
+    If requirejs is loaded on the page, this function will pause
+    Selenium until require is finished loading the given dependencies, or for a
+    maximum length of time (in seconds). If requirejs is not loaded on the page,
+    this function will return immediately.
+
+    :param dependencies: a list of strings that identify resources that
+        we should wait for requirejs to load. By default, requirejs will only
+        wait for jquery.
+    """
+    if not dependencies:
+        dependencies = ["jquery"]
+    # str.format(): "If you need to include a brace character in the literal
+    # text, it can be escaped by doubling: {{ and }}."
+    # http://docs.python.org/2/library/string.html#formatstrings
+    js = """
+var callback = arguments[arguments.length - 1];
+if(window.require) {{
+  require({deps}, function() {{
+    callback(true);
+  }});
+}} else {{
+  callback(false);
+}}
+    """.format(deps=json.dumps(dependencies))
+    world.browser.driver.execute_async_script(js)
+
+
 def ajax_complete(_driver):
     return world.browser.evaluate_script("jQuery.active") == 0
 
 
 @world.absorb
 def wait_for_ajax_complete():
-    world.wait_for(ajax_complete)
+    js = """
+var callback = arguments[arguments.length - 1];
+if(!window.jQuery) {callback(false);}
+var intervalID = setInterval(function() {
+  if(jQuery.active == 0) {
+    clearInterval(intervalID);
+    callback(true);
+  }
+}, 100);
+    """
+    world.browser.driver.execute_async_script(js)
+    #world.wait_for(ajax_complete)
 
 
 @world.absorb
 def visit(url):
     world.browser.visit(django_url(url))
+    wait_for_requirejs()
 
 
 @world.absorb

@@ -31,6 +31,9 @@ def test_i_select_schedule_and_details(step):
     world.click_course_settings()
     link_css = 'li.nav-course-settings-schedule a'
     world.css_click(link_css)
+    world.wait_for_requirejs(
+        ["jquery", "js/models/course",
+         "js/models/settings/course_details", "js/views/settings/main"])
 
 
 @step('I have set course dates$')

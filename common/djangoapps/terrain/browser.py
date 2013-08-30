@@ -12,7 +12,7 @@ from django.core.management import call_command
 from django.conf import settings
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from requests import put
+import requests
 from base64 import encodestring
 from json import dumps
 
@@ -55,7 +55,8 @@ def set_job_status(jobid, passed=True):
     body_content = dumps({"passed": passed})
     config = get_username_and_key()
     base64string = encodestring('{}:{}'.format(config['username'], config['access-key']))[:-1]
-    result = put('http://saucelabs.com/rest/v1/{}/jobs/{}'.format(config['username'], world.jobid),
+    result = requests.put(
+        'http://saucelabs.com/rest/v1/{}/jobs/{}'.format(config['username'], world.jobid),
         data=body_content,
         headers={"Authorization": "Basic {}".format(base64string)})
     return result.status_code == 200
@@ -97,6 +98,7 @@ def initial_setup(server):
         num_attempts = 0
         while (not success) and num_attempts < MAX_VALID_BROWSER_ATTEMPTS:
             world.browser = Browser(browser_driver)
+            world.browser.driver.set_script_timeout(10)
 
             # Try to visit the main page
             # If the browser session is invalid, this will
@@ -126,6 +128,7 @@ def initial_setup(server):
             **make_desired_capabilities()
         )
         world.browser.driver.implicitly_wait(30)
+        world.browser.driver.set_script_timeout(10)
 
     world.absorb(world.browser.driver.session_id, 'jobid')
 
