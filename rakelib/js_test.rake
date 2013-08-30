@@ -3,6 +3,7 @@ JS_TEST_SUITES = {
     'cms' => 'cms/static/js_test.yml',
     'xmodule' => 'common/lib/xmodule/xmodule/js/js_test.yml',
     'common' => 'common/static/js_test.yml',
+    'common_requirejs' => 'common/static/js_test_requirejs.yml',
 }
 
 # Turn relative paths to absolute paths from the repo root.
