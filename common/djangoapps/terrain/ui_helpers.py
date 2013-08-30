@@ -47,14 +47,19 @@ def wait_for_requirejs(dependencies=None):
     """
     if not dependencies:
         dependencies = ["jquery"]
+    # stick jquery at the front
+    if len(dependencies) < 1 or dependencies[0] != "jquery":
+        dependencies.insert(0, "jquery")
     # str.format(): "If you need to include a brace character in the literal
     # text, it can be escaped by doubling: {{ and }}."
     # http://docs.python.org/2/library/string.html#formatstrings
     js = """
 var callback = arguments[arguments.length - 1];
 if(window.require) {{
-  require({deps}, function() {{
-    callback(true);
+  require({deps}, function($) {{
+    $(document).ready(function() {{
+      setTimeout(callback, 50);
+    }});
   }});
 }} else {{
   callback(false);

@@ -80,6 +80,7 @@ def press_the_notification_button(_step, name):
         world.browser.execute_script("$('{}').click()".format(css))
     else:
         world.css_click(css, success_condition=button_clicked), '%s button not clicked after 5 attempts.' % name
+    world.wait_for_ajax_complete()
 
 
 @step('I change the "(.*)" field to "(.*)"$')

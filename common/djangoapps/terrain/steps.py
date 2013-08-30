@@ -29,22 +29,23 @@ def wait(step, seconds):
 REQUIREJS_WAIT = {
     re.compile('settings-details'): [
         "jquery", "js/models/course",
-        "js/models/settings/course_details", "js/views/settings/main"]
+        "js/models/settings/course_details", "js/views/settings/main"],
+    re.compile('settings-advanced'): [
+        "jquery", "js/models/course", "js/models/settings/advanced",
+        "js/views/settings/advanced", "codemirror"],
 }
 
 
 @step('I reload the page$')
 def reload_the_page(step):
-    #world.wait_for_ajax_complete()
-    world.wait(2)
+    world.wait_for_ajax_complete()
     world.browser.reload()
     requirements = None
     for test, req in REQUIREJS_WAIT.items():
         if test.search(world.browser.url):
             requirements = req
             break
-    #world.wait_for_requirejs(requirements)
-    world.wait(2)
+    world.wait_for_requirejs(requirements)
 
 
 @step('I press the browser back button$')

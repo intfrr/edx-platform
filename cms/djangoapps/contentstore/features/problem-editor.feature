@@ -44,7 +44,6 @@ Feature: Problem Editor
     Given I have created a Blank Common Problem
     When I edit and select Settings
     Then I can set the weight to "3.5"
-    And I wait for AJAX to complete
     And my change to weight is persisted
     And I can revert to the default value of unset for weight
 
