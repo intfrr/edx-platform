@@ -229,8 +229,12 @@ function (VideoPlayer) {
             webmSource:         this.el.data('webm-source'),
             oggSource:          this.el.data('ogg-source'),
             // TODO: Move to config
-            ytTestTimeout:      1500,
-
+            // ytTestTimeout:      1500,
+            ytTestTimeout:      (
+                (isFinite(parseInt(this.el.data('yt-test-timeout'), 10))) ?
+                    parseInt(this.el.data('yt-test-timeout'), 10) :
+                    1500
+            ),
             fadeOutTimeout:     1400,
 
             availableQualities: ['hd720', 'hd1080', 'highres']
