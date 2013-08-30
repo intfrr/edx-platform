@@ -242,12 +242,11 @@ function (VideoPlayer) {
             _setConfigurations(this);
             _renderElements(this);
         } else {
-            // TODO: Don't use global scope. Move to closure.
-            if (!window.youtubeXhr) {
-                window.youtubeXhr = this.getVideoMetadata();
+            if (!this.youtubeXhr) {
+                this.youtubeXhr = this.getVideoMetadata();
             }
 
-            window.youtubeXhr
+            this.youtubeXhr
                 .always(function(json, status) {
                     var err = $.isPlainObject(json.error) ||
                                 (status !== "success" && status !== "notmodified");

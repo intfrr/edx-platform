@@ -32,7 +32,7 @@ function (
     previousState = null;
 
     window.Video = function (element) {
-        var state;
+        var state, youtubeXhr;
 
         // Stop bufferization of previous video on sequence change.
         // Problem: multiple video tags with the same src cannot
@@ -53,7 +53,9 @@ function (
         state = {};
         previousState = state;
 
+        state.youtubeXhr = youtubeXhr;
         Initialize(state, element);
+        youtubeXhr = state.youtubeXhr;
 
         VideoControl(state);
         VideoQualityControl(state);
