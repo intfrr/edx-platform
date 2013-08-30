@@ -147,8 +147,6 @@ function (VideoPlayer) {
         if (state.parseYoutubeStreams(state.config.youtubeStreams)) {
             state.videoType = 'youtube';
 
-            state.fetchMetadata();
-            state.parseSpeed();
             return true;
         }
         return false;
@@ -230,6 +228,8 @@ function (VideoPlayer) {
             mp4Source:          this.el.data('mp4-source'),
             webmSource:         this.el.data('webm-source'),
             oggSource:          this.el.data('ogg-source'),
+            // TODO: Move to config
+            ytTestTimeout:      1500,
 
             fadeOutTimeout:     1400,
 
@@ -242,7 +242,12 @@ function (VideoPlayer) {
             _setConfigurations(this);
             _renderElements(this);
         } else {
-            this.getVideoMetadata()
+            // TODO: Don't use global scope. Move to closure.
+            if (!window.youtubeXhr) {
+                window.youtubeXhr = this.getVideoMetadata();
+            }
+
+            window.youtubeXhr
                 .always(function(json, status) {
                     var err = $.isPlainObject(json.error) ||
                                 (status !== "success" && status !== "notmodified");
@@ -253,6 +258,9 @@ function (VideoPlayer) {
                         // alternate sources should automatically play.
                         _prepareHTML5Video(_this);
                         _this.el.find('a.quality_control').hide();
+                    } else {
+                        _this.fetchMetadata();
+                        _this.parseSpeed();
                     }
 
                     _setConfigurations(_this);
@@ -325,7 +333,9 @@ function (VideoPlayer) {
 
         $.each(this.videos, function (speed, url) {
             _this.getVideoMetadata(url, function(data) {
-                _this.metadata[data.data.id] = data.data;
+                if (data.data) {
+                    _this.metadata[data.data.id] = data.data;
+                }
             });
         });
     }
@@ -366,8 +376,8 @@ function (VideoPlayer) {
         successHandler = ($.isFunction(callback)) ? callback : null;
         xhr = $.ajax({
             url: 'https://gdata.youtube.com/feeds/api/videos/' + url + '?v=2&alt=jsonc',
-            timeout: 500,
             dataType: 'jsonp',
+            timeout: this.config.ytTestTimeout,
             success: successHandler
         });
 
