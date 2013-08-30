@@ -228,8 +228,7 @@ function (VideoPlayer) {
             mp4Source:          this.el.data('mp4-source'),
             webmSource:         this.el.data('webm-source'),
             oggSource:          this.el.data('ogg-source'),
-            // TODO: Move to config
-            // ytTestTimeout:      1500,
+
             ytTestTimeout:      (
                 (isFinite(parseInt(this.el.data('yt-test-timeout'), 10))) ?
                     parseInt(this.el.data('yt-test-timeout'), 10) :
