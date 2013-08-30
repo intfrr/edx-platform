@@ -264,6 +264,7 @@ def type_in_codemirror(index, text):
     g._element.send_keys(text)
     if world.is_firefox():
         world.trigger_event('div.CodeMirror', index=index, event='blur')
+    world.wait_for_ajax_complete()
 
 
 def upload_file(filename):
