@@ -58,10 +58,10 @@
 
                 describe('Check Youtube link existence', function () {
                     var statusList = {
-                        error: 'html5',
-                        timeout: 'html5',
-                        abort: 'html5',
-                        parsererror: 'html5',
+                        error: 'youtube',
+                        timeout: 'youtube',
+                        abort: 'youtube',
+                        parsererror: 'youtube',
                         success: 'youtube',
                         notmodified: 'youtube'
                     };
@@ -84,7 +84,7 @@
                     }
 
                     it('if video id is incorrect', function () {
-                        checkPlayer('html5', { error: {} }, 'success');
+                        checkPlayer('youtube', { error: {} }, 'success');
                     });
 
                     $.each(statusList, function(status, mode){

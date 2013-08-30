@@ -95,7 +95,9 @@ jasmine.stubRequests = ->
         settings.success data: jasmine.stubbedMetadata[match[1]]
       else {
           always: (callback) ->
-            callback.call(window, {}, 'success');
+            callback.call(window, {}, 'success')
+          done: (callback) ->
+            callback.call(window, {}, 'success')
         }
     else if match = settings.url.match /static(\/.*)?\/subs\/(.+)\.srt\.sjson/
       settings.success jasmine.stubbedCaption

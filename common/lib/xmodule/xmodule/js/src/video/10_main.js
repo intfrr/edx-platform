@@ -20,7 +20,8 @@ function (
     VideoSpeedControl,
     VideoCaption
 ) {
-    var previousState;
+    var previousState,
+        youtubeXhr = null;
 
     // Because this constructor can be called multiple times on a single page (when
     // the user switches verticals, the page doesn't reload, but the content changes), we must
@@ -32,7 +33,7 @@ function (
     previousState = null;
 
     window.Video = function (element) {
-        var state, youtubeXhr;
+        var state;
 
         // Stop bufferization of previous video on sequence change.
         // Problem: multiple video tags with the same src cannot
@@ -55,7 +56,9 @@ function (
 
         state.youtubeXhr = youtubeXhr;
         Initialize(state, element);
-        youtubeXhr = state.youtubeXhr;
+        if (!youtubeXhr) {
+            youtubeXhr = state.youtubeXhr;
+        }
 
         VideoControl(state);
         VideoQualityControl(state);
